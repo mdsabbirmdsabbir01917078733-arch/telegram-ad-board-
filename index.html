@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDI Empire</title>
 
+<script src='//libtl.com/sdk.js' data-zone='10407136' data-sdk='show_10407136'></script>
+  
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body{margin:0;font-family:sans-serif;background:#0f172a;color:#fff}
+.header{background:#2563eb;padding:15px;display:flex;align-items:center}
+.header img{width:45px;height:45px;border-radius:50%;margin-right:10px}
+.card{background:#111827;margin:15px;padding:15px;border-radius:12px}
+.btn{background:#22c55e;color:#000;padding:12px;border-radius:8px;text-align:center;margin-top:10px}
+.menu{position:fixed;bottom:0;width:100%;display:flex;background:#1e293b}
+.menu div{flex:1;text-align:center;padding:12px}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<img src="https://i.imgur.com/4M34hi2.png">
+<div>
+<div id="username">User</div>
+<div id="balance">0.00 BDT</div>
+</div>
+</div>
+
+<div class="card">
+<h3>এড দেখুন আয় করুন</h3>
+<div class="btn" onclick="showAd()">Earn Now</div>
+</div>
+
+<div class="card">
+<h3>Withdraw</h3>
+<div class="btn" onclick="withdraw('bkash')">বিকাশ</div>
+<div class="btn" onclick="withdraw('nagad')">নগদ</div>
+</div>
+
+<div class="card">
+<h3>Refer & Earn</h3>
+<div id="ref"></div>
+</div>
+
+<div class="menu">
+<div>Home</div>
+<div>Earn</div>
+<div>Withdraw</div>
+<div>Profile</div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.expand();
+
+document.getElementById("username").innerText =
+tg.initDataUnsafe.user?.first_name || "User";
+
+/* এখানে আপনার Telegram Bot Username বসান */
+document.getElementById("ref").innerText = Double earning bot 
+"https://t.me/এখানে_BOT_USERNAME?start=" + tg.initDataUnsafe.user?.id;
+
+/* এড শো */
+function showAd(){
+if(typeof show_<script src='//libtl.com/sdk.js' data-zone='10407136' data-sdk='show_10407136'></script>
+  ();
+}
+}
+
+/* উইথড্র */
+function withdraw(type){
+fetch("https://api.telegram.org/8061432379:AAHuwEJCYafxuR8ju4MkaEIP4inOyuGnpk0/sendMessage",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+/*8308715957*/
+chat_id:8308715957",
+text:"Withdraw Request: "+type
+})
+});
+alert("Request Sent");
+}
+</script>
+
+</body>
+</html>
