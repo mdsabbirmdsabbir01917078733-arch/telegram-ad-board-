@@ -1,43 +1,131 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>Telegram Ad Board</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Telegram WebApp SDK -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<!-- Monetag SDK -->
+<script src='//libtl.com/sdk.js'
+        data-zone='10407136'
+        data-sdk='show_10407136'></script>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#eef1ff;
+}
+.header{
+  background:#ffffff;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.card{
+  background:#fff;
+  margin:15px;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+.stats{
+  display:flex;
+  justify-content:space-between;
+  text-align:center;
+}
+.btn{
+  width:100%;
+  padding:15px;
+  background:#6c6cff;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+}
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  border-top:1px solid #ddd;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <strong id="username">User</strong>
+</div>
+
+<div class="card stats">
+  <div>
+    <div>বর্তমান ব্যালেন্স</div>
+    <strong id="balance">0</strong>
+  </div>
+  <div>
+    <div>রেফার সংখ্যা</div>
+    <strong id="refs">0</strong>
+  </div>
+  <div>
+    <div>মোট উপার্জন</div>
+    <strong id="total">0</strong>
+  </div>
+</div>
+
+<div class="card">
+  <h3>দেখে উপার্জন করুন</h3>
+  <p>দৈনিক সীমা: <span id="limit">0</span>/20</p>
+  <button class="btn" onclick="showAd()">উপার্জন শুরু করুন</button>
+</div>
+
+<div class="bottom-nav">
+  <span>ড্যাশবোর্ড</span>
+  <span>কাজসমূহ</span>
+  <span>আমন্ত্রণ</span>
+  <span>উত্তোলন</span>
+  <span>সাপোর্ট</span>
+</div>
+
 <script>
-// demo refer count (তুমি চাইলে পরে backend দিয়ে real করবা)
-if(!localStorage.getItem("refCount")){
-  localStorage.setItem("refCount", "0");
-}
+const tg = window.Telegram.WebApp;
+tg.ready();
 
-// Withdraw request
-function sendWithdraw(){
- let ref = parseInt(localStorage.getItem("refCount"));
- if(ref < 5){
-   alert("Withdraw করতে মিনিমাম ৫ জনকে রেফার করতে হবে");
-   return;
- }
+let balance = 0;
+let total = 0;
+let ads = 0;
 
- let m=document.getElementById("method").value;
- let n=document.getElementById("number").value;
- let a=document.getElementById("amount").value;
+document.getElementById("username").innerText =
+  tg.initDataUnsafe?.user?.first_name || "User";
 
- if(a < 200){
-   alert("মিনিমাম ২০০ টাকা");
-   return;
- }
+function showAd(){
+  if(ads >= 20){
+    alert("আজকের লিমিট শেষ");
+    return;
+  }
 
- fetch("https://api.telegram.org/bot8061432379:AAHuwEJCYafxuR8ju4MkaEIP4inOyuGnpk0/sendMessage",{
- method:"POST",
- headers:{"Content-Type":"application/json"},
- body:JSON.stringify({
-   chat_id:"8308715957",
-   text:"Withdraw Request\nMethod: "+m+"\nNumber: "+n+"\nAmount: "+a+"\nRefer Count: "+ref
- })
- });
+  try{
+    show_10407136(); // Monetag Ad
+  }catch(e){}
 
- alert("Withdraw Request Sent");
-}
+  ads++;
+  balance += 10;
+  total += 10;
 
-// demo: refer button চাপলে ১ রেফার বাড়বে
-function copyRef(){
- let ref = parseInt(localStorage.getItem("refCount"));
- ref++;
- localStorage.setItem("refCount", ref);
- alert("রেফার লিংক কপি হয়েছে\nTotal Refer: "+ref);
+  document.getElementById("balance").innerText = balance;
+  document.getElementById("total").innerText = total;
+  document.getElementById("limit").innerText = ads;
 }
 </script>
+
+</body>
+</html>
