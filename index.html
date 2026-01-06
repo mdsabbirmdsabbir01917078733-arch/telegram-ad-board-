@@ -2,128 +2,162 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<title>Telegram Ad Board</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Double Earning Bot</title>
 
-<!-- Telegram WebApp SDK -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<!-- Monetag SDK -->
-<script src='//libtl.com/sdk.js'
-        data-zone='10407136'
-        data-sdk='show_10407136'></script>
+<!-- MONETAG SDK (READY) -->
+<script src="https://alwingulla.com/88/tag.min.js" data-zone="8775295"></script>
 
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#eef1ff;
-}
-.header{
-  background:#ffffff;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.card{
-  background:#fff;
-  margin:15px;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
-}
-.stats{
-  display:flex;
-  justify-content:space-between;
-  text-align:center;
-}
-.btn{
-  width:100%;
-  padding:15px;
-  background:#6c6cff;
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-size:18px;
-}
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#fff;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-  border-top:1px solid #ddd;
-}
+body{margin:0;font-family:Arial;background:#f4f6fb}
+header{background:linear-gradient(135deg,#6a11cb,#2575fc);color:#fff;padding:15px;border-radius:0 0 20px 20px}
+.profile{display:flex;align-items:center}
+.profile img{width:55px;height:55px;border-radius:50%;border:2px solid #fff;margin-right:12px}
+.card{background:#fff;margin:12px;padding:15px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.1)}
+.flex{display:flex;justify-content:space-between;text-align:center}
+.btn{background:#2575fc;color:#fff;padding:12px;border-radius:10px;text-align:center;margin-top:10px}
+.btn:active{opacity:.7}
+.progress{background:#eee;border-radius:20px;overflow:hidden;margin-top:10px}
+.progress div{background:#4caf50;height:12px;width:0%}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid #ddd}
+.bottom-nav div{flex:1;text-align:center;padding:10px;font-size:14px}
+.bottom-nav div.active{color:#2575fc;font-weight:bold}
+.page{display:none}
+.page.active{display:block}
+input,select{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ccc}
+.notice{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:99}
+.notice-box{background:#fff;padding:20px;border-radius:15px;text-align:center;width:85%}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <strong id="username">User</strong>
+<!-- NOTICE -->
+<div class="notice" id="notice">
+<div class="notice-box">
+<h3>📢 গুরুত্বপূর্ণ নোটিশ</h3>
+<p>
+প্রতিদিন ১০০টি বিজ্ঞাপন দেখতে পারবেন<br>
+প্রতি বিজ্ঞাপনে ২ টাকা<br>
+মিনিমাম উইথড্র ১৫০০ টাকা<br>
+৫ জন রেফার বাধ্যতামূলক<br>
+২৪–৪৮ ঘন্টার মধ্যে পেমেন্ট
+</p>
+<div class="btn" onclick="closeNotice()">ঠিক আছে</div>
+</div>
 </div>
 
-<div class="card stats">
-  <div>
-    <div>বর্তমান ব্যালেন্স</div>
-    <strong id="balance">0</strong>
-  </div>
-  <div>
-    <div>রেফার সংখ্যা</div>
-    <strong id="refs">0</strong>
-  </div>
-  <div>
-    <div>মোট উপার্জন</div>
-    <strong id="total">0</strong>
-  </div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="page active">
+<header>
+<div class="profile">
+<img src="https://i.imgur.com/8Km9tLL.png">
+<div>
+<b id="username">User Name</b><br>
+ID: <span id="userid">123456</span>
+</div>
+</div>
+</header>
+
+<div class="card flex">
+<div>বর্তমান ব্যালেন্স<br><b>৳ <span id="balance">0</span></b></div>
+<div>রেফার<br><b><span id="refer">0</span></b></div>
+<div>মোট আয়<br><b>৳ <span id="total">0</span></b></div>
 </div>
 
 <div class="card">
-  <h3>দেখে উপার্জন করুন</h3>
-  <p>দৈনিক সীমা: <span id="limit">0</span>/20</p>
-  <button class="btn" onclick="showAd()">উপার্জন শুরু করুন</button>
+<b>এড দেখে উপার্জন করুন</b>
+<div class="progress"><div id="progressBar"></div></div>
+<p>আজ দেখেছেন: <span id="adsWatched">0</span> / 100</p>
+<div class="btn" onclick="watchAd()">উপার্জন করুন</div>
+</div>
 </div>
 
+<!-- TASK -->
+<div id="task" class="page">
+<div class="card">
+<h3>Task</h3>
+<p>এড দেখে আয় করুন</p>
+<div class="btn" onclick="watchAd()">এড দেখুন</div>
+</div>
+</div>
+
+<!-- REFER -->
+<div id="referPage" class="page">
+<div class="card">
+<h3>রেফার করুন</h3>
+<p>প্রতি রেফারে বোনাস পাবেন</p>
+<input id="refLink" value="https://t.me/Double_earning_max_bot?start=123456" readonly>
+<div class="btn" onclick="copyRef()">রেফার লিংক কপি করুন</div>
+</div>
+</div>
+
+<!-- WITHDRAW -->
+<div id="withdraw" class="page">
+<div class="card">
+<h3>Withdraw</h3>
+<select>
+<option>Bkash</option>
+<option>Nagad</option>
+<option>Rocket</option>
+</select>
+<input placeholder="নাম্বার লিখুন">
+<input placeholder="Amount লিখুন">
+<div class="btn" onclick="withdraw()">Withdraw করুন</div>
+<p id="wmsg"></p>
+</div>
+</div>
+
+<!-- BOTTOM MENU -->
 <div class="bottom-nav">
-  <span>ড্যাশবোর্ড</span>
-  <span>কাজসমূহ</span>
-  <span>আমন্ত্রণ</span>
-  <span>উত্তোলন</span>
-  <span>সাপোর্ট</span>
+<div class="active" onclick="showPage('dashboard',this)">Dashboard</div>
+<div onclick="showPage('task',this)">Task</div>
+<div onclick="showPage('referPage',this)">Refer</div>
+<div onclick="showPage('withdraw',this)">Withdraw</div>
 </div>
 
 <script>
-const tg = window.Telegram.WebApp;
-tg.ready();
+let balance=0,total=0,ads=0,refer=0;
 
-let balance = 0;
-let total = 0;
-let ads = 0;
+function closeNotice(){document.getElementById('notice').style.display='none'}
 
-document.getElementById("username").innerText =
-  tg.initDataUnsafe?.user?.first_name || "User";
+function watchAd(){
+ if(ads>=100){alert("আজকের লিমিট শেষ");return;}
 
-function showAd(){
-  if(ads >= 20){
-    alert("আজকের লিমিট শেষ");
-    return;
-  }
+ if(typeof show_8775295 === "function"){show_8775295();}
 
-  try{
-    show_10407136(); // Monetag Ad
-  }catch(e){}
+ ads++;
+ balance+=2;
+ total+=2;
+ update();
+}
 
-  ads++;
-  balance += 10;
-  total += 10;
+function update(){
+ document.getElementById("balance").innerText=balance;
+ document.getElementById("total").innerText=total;
+ document.getElementById("adsWatched").innerText=ads;
+ document.getElementById("progressBar").style.width=ads+"%";
+}
 
-  document.getElementById("balance").innerText = balance;
-  document.getElementById("total").innerText = total;
-  document.getElementById("limit").innerText = ads;
+function copyRef(){
+ navigator.clipboard.writeText(refLink.value);
+ refer++;
+ update();
+ alert("রেফার লিংক কপি হয়েছে");
+}
+
+function withdraw(){
+ if(balance<1500){wmsg.innerText="❌ মিনিমাম ১৫০০ টাকা দরকার";return;}
+ if(refer<5){wmsg.innerText="❌ মিনিমাম ৫ জন রেফার দরকার";return;}
+ wmsg.innerText="✅ Withdraw Success (24–48 ঘন্টা)";
+ balance=0;update();
+}
+
+function showPage(id,el){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.bottom-nav div').forEach(b=>b.classList.remove('active'));
+ el.classList.add('active');
 }
 </script>
 
